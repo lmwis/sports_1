@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<title>校运会积分榜</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/rank_style.css"/>
+    <script src="../static/js/rank.js"></script>
+    <div id="base" th:replace="'base'"></div>
+    <script src="../static/js/jquery-2.2.3.min.js"></script>
+    <script src="../static/js/common.js"></script>
+    <style type="text/css">
+        #loading{
+            background-color: #bd4932;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 99;
+            margin-top: 0px;
+            top: 0px;
+        }
+        #loading-center{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #loading-center-absolute {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 200px;
+            width: 200px;
+            margin-top: -100px;
+            margin-left: -100px;
+        }
+        #object{
+            width: 80px;
+            height: 80px;
+            background-color: #FFF;
+            -webkit-animation: animate 1s infinite ease-in-out;
+            animation: animate 1s infinite ease-in-out;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 60px;
+        }
+        @-webkit-keyframes animate {
+            0% { -webkit-transform: perspective(160px); }
+            50% { -webkit-transform: perspective(160px) rotateY(-180deg); }
+            100% { -webkit-transform: perspective(160px) rotateY(-180deg) rotateX(-180deg); }
+        }
+
+        @keyframes animate {
+            0% {
+                transform: perspective(160px) rotateX(0deg) rotateY(0deg);
+                -webkit-transform: perspective(160px) rotateX(0deg) rotateY(0deg);
+            } 50% {
+                  transform: perspective(160px) rotateX(-180deg) rotateY(0deg);
+                  -webkit-transform: perspective(160px) rotateX(-180deg) rotateY(0deg) ;
+              } 100% {
+                    transform: perspective(160px) rotateX(-180deg) rotateY(-180deg);
+                    -webkit-transform: perspective(160px) rotateX(-180deg) rotateY(-180deg);
+                }
+        }
+    </style>
+    <script>
+        $("#base").load("base.html");
+    </script>
+    <h3 style="
+    background: rgba(255, 255, 255, 0.64);
+    width: 355px;
+    margin: 10px auto;
+    padding: 6px;
+    height: 36px;
+    border-radius: 25px;
+">校运会积分排行榜</h3>
+    <div id="colleges_box"></div>
+
+    <div id="loading">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <div id="object"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //查询所有学院
+        getColleges();
+        function getColleges() {
+            $.ajax({
+                method:"post",
+                url:contextPre+"/index/getCollegesV1",
+                data:{},
+                xhrFields: {withCredentials: true},
+                success:function (result) {
+                    console.log(result);
+                    if(result.status != "success"){
+                        alert(result.data.errMsg);
+                        return;
+                    }
+                    // alert(result.data);
+                    var colleges=result.data;
+                    var content="";
+                    $.each(colleges,function(i,college){
+                        var medal_count = parseInt(college.gold)+parseInt(college.silver)+parseInt(college.copper);
+                        content+='<div class="college">'
+                        content+='<img class="ranking" src="../static/img/college_rank/'+(i+1)+'.jpg" style="position: relative"/>'
+                        content+='<div class="college_name">'+(college.collegeName)+'</div>'
+                        content+='<div class="score" style="color:black">总积分<br/><span>'+(college.total)+'</span></div>'
+                        content+='<div class="score" style="right:20px;color:black">奖牌数<br/><span>'+medal_count+'</span></div>';
+
+                        content+='<hr class="line"/>'
+                        content+='<img class="gold" src="../static/img/college_rank/gold.jpg"/>'
+                        content+='<div class="gold_amount">'+(college.gold)+'</div>'
+                        content+='<img class="silver" src="../static/img/college_rank/silver.jpg"/>'
+                        content+='<div class="silver_amount">'+(college.silver)+'</div>'
+                        content+='<img class="copper" src="../static/img/college_rank/copper.jpg"/>'
+                        content+='<div class="copper_amount">'+(college.copper)+'</div>'
+                        content+='</div>'
+                    });
+                    // $(".college").html(content);
+                    colleges_box.innerHTML=content;
+                    $("#loading").fadeOut(500);
+                },
+                error:function () {
+                    alert("系统出错");
+                }
+            })
+
+        }
+    </script>
+
+</html>
+
+
