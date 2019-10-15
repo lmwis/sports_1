@@ -1,3 +1,8 @@
+
+/**
+SUST 2018 校运会数据
+ */
+
 USE websustdx;
 CREATE TABLE `admin` (
   `adm_userid` VARCHAR(50) NOT NULL,

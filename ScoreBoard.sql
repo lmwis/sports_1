@@ -1,4 +1,7 @@
 /*
+
+SUST 2019 校运会数据
+
 Navicat MySQL Data Transfer
 
 Source Server         : web003
