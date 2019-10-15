@@ -3,7 +3,6 @@ package com.example.sports.dao;
 import com.example.sports.bean.Connect;
 import com.example.sports.bean.MedalNum;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**
@@ -48,10 +47,7 @@ public interface ConnectMapper {
 
     /**
      * 修改数据
-     * @param athletesId
-     * @param rank
-     * @param score
-     * @param grade
+     * @param connect
      */
     public void updateConnectData(Connect connect);
 

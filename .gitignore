@@ -27,3 +27,6 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+### 数据库相关配置  ###
+src/main/resources/application-enc.properties
