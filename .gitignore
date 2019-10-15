@@ -30,3 +30,7 @@ HELP.md
 
 ### 数据库相关配置  ###
 src/main/resources/application-enc.properties
+
+.mvn
+mvnw
+mvnw.cmd
